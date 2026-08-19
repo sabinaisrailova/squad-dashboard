@@ -1,6 +1,15 @@
 [
   {
     "date": "2026-08-20",
+    "macrostructure": "app-dashboard card-grid (macro unlocked, full layout rebuild)",
+    "theme": "custom",
+    "theme_axes": "light / grotesk-sans / cool",
+    "vibe": "Linear/Stripe-school product analytics surface",
+    "enrichment": "none",
+    "brief": "Birbank squad/tribe dashboard · SaaS product-interface redesign of page.dc.html"
+  },
+  {
+    "date": "2026-08-20",
     "macrostructure": "workbench-shell (user-locked structure, visual-layer redesign)",
     "theme": "custom",
     "theme_axes": "light / roman-serif / warm-bronze",
