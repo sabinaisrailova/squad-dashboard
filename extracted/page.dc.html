@@ -281,7 +281,7 @@
         <div style="overflow-x:auto;">
           <div style="min-width:680px;">
             <div style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:8px 12px;border-bottom:1px solid var(--rule);font-size:11.5px;font-weight:500;color:var(--muted);">
-              <span></span><span>Squad</span><span>PO / track</span><span>Level</span><span style="text-align:right;">Composite</span><span>Status</span>
+              <span></span><span>Squad</span><span>PO / track</span><span>Level</span><span style="text-align:right;padding-right:18px;">Composite</span><span>Status</span>
             </div>
             <sc-for list="{{ rows }}" as="row" hint-placeholder-count="10">
               <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;" style-hover="background:var(--hover);">
@@ -289,9 +289,10 @@
                 <span><div style="font-size:13.5px;">{{ row.name }}</div><div style="font-size:11.5px;color:var(--muted);">{{ row.tribe }}</div></span>
                 <span><div style="font-family:var(--font-mono);font-size:13.5px;">{{ row.po }}</div><div style="font-size:10px;color:var(--muted);font-variant:small-caps;letter-spacing:0.04em;">{{ row.trackShort }}</div></span>
                 <span><span style="font-family:var(--font-mono);font-size:11.5px;border:1px solid {{ row.levelBorder }};border-radius:4px;padding:1px 6px;color:{{ row.levelColor }};white-space:nowrap;">{{ row.levelText }}</span></span>
-                <span style="display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;">
-                  <span style="width:48px;height:5px;border-radius:6px;background:var(--track);overflow:hidden;display:inline-block;flex:none;" aria-hidden="true"><span style="display:block;height:100%;border-radius:6px;background:{{ row.statusColor }};width:{{ row.compositePct }}%;"></span></span>
-                  <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:500;">{{ row.compositeText }}</span>
+                <span style="display:grid;grid-template-columns:64px 30px 10px;gap:8px;align-items:center;justify-content:end;">
+                  <span style="width:64px;height:5px;border-radius:6px;background:var(--track);overflow:hidden;display:inline-block;" aria-hidden="true"><span style="display:block;height:100%;border-radius:6px;background:{{ row.statusColor }};width:{{ row.compositePct }}%;"></span></span>
+                  <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:500;text-align:right;font-variant-numeric:tabular-nums;">{{ row.compositeNum }}</span>
+                  <span style="font-family:var(--font-mono);font-size:12.5px;color:var(--muted);text-align:center;">{{ row.starMark }}</span>
                 </span>
                 <span style="display:flex;"><span style="display:inline-flex;align-items:center;gap:6px;background:{{ row.statusBg }};color:{{ row.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ row.statusColor }};flex:none;"></span>{{ row.statusLabel }}</span></span>
               </div>
@@ -317,9 +318,36 @@
             <span style="display:inline-flex;align-items:center;gap:6px;background:{{ dl.statusBg }};color:{{ dl.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;flex:none;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ dl.statusColor }};flex:none;"></span>{{ dl.statusLabel }}</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid var(--rule-soft);padding-top:12px;">
-            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Delivery</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.deliveryHealth }}</div></div>
-            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Talent</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.teamTalent }}</div></div>
-            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Composite</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.compositeDL }}</div></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;" title="{{ dl.deliveryHealth }}">
+              <div style="position:relative;width:38px;height:38px;">
+                <svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true">
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="var(--track)" stroke-width="4.5"></circle>
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="var(--tech)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="{{ dl.deliveryDash }}" transform="rotate(-90 19 19)"></circle>
+                </svg>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums;">{{ dl.deliveryHealth }}</span>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Delivery</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;" title="{{ dl.teamTalent }}">
+              <div style="position:relative;width:38px;height:38px;">
+                <svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true">
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="var(--track)" stroke-width="4.5"></circle>
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="var(--biz)" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="{{ dl.talentDash }}" transform="rotate(-90 19 19)"></circle>
+                </svg>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums;">{{ dl.teamTalent }}</span>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Talent</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:6px;min-width:0;" title="{{ dl.compositeDL }}">
+              <div style="position:relative;width:38px;height:38px;">
+                <svg width="38" height="38" sc-camel-view-box="0 0 38 38" aria-hidden="true">
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="var(--track)" stroke-width="4.5"></circle>
+                  <circle cx="19" cy="19" r="15" fill="none" stroke="{{ dl.statusColor }}" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="{{ dl.compositeDash }}" transform="rotate(-90 19 19)"></circle>
+                </svg>
+                <span style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:11.5px;font-weight:500;font-variant-numeric:tabular-nums;">{{ dl.compositeDL }}</span>
+              </div>
+              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Composite</div>
+            </div>
           </div>
         </div>
       </sc-for>
@@ -989,9 +1017,16 @@ class Component extends DCLogic {
     dlCards.forEach(function(c2){
       const tint2=STATUS_TINT[c2.statusColor]||['var(--paper-2)','var(--ink-2)'];
       c2.statusBg=tint2[0];c2.statusInk=tint2[1];
+      const ringC=2*Math.PI*15;
+      const dash=function(v){return (Math.max(0,Math.min(100,v))/100*ringC).toFixed(1)+' '+ringC.toFixed(1);};
+      c2.deliveryDash=dash(c2.deliveryHealth);
+      c2.talentDash=dash(c2.teamTalent);
+      c2.compositeDash=dash(c2.compositeDL);
     });
     rows.forEach(function(r0){
       r0.compositePct=Math.max(0,Math.min(100,parseInt(r0.compositeText,10)||0));
+      r0.compositeNum=r0.compositeText.replace(' *','');
+      r0.starMark=r0.compositeText.indexOf('*')>=0?'*':'';
       const tint=STATUS_TINT[r0.statusColor]||['var(--paper-2)','var(--ink-2)'];
       r0.statusBg=tint[0];r0.statusInk=tint[1];
     });
