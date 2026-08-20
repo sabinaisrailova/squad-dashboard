@@ -122,8 +122,13 @@
 <div data-stp-shell="true" style="display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start;padding:0 24px;">
   <aside data-stp-side="true" style="min-height:60vh;padding:16px 8px 32px 0;">
     <div style="padding:0 16px 14px;">
-      <label style="display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Search squad</label>
-      <input type="search" placeholder="Cards Journey" autocomplete="off" value="{{ search }}" sc-camel-on-change="{{ setSearch }}" style="width:100%;padding:7px 10px;border:1px solid var(--rule-strong);border-radius:6px;font-family:inherit;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
+      <label style="display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Search tribe</label>
+      <div style="position:relative;">
+        <input type="search" placeholder="Cards Products" autocomplete="off" value="{{ search }}" sc-camel-on-change="{{ setSearch }}" sc-camel-on-key-down="{{ searchKeyDown }}" style="width:100%;padding:7px 26px 7px 10px;border:1px solid var(--rule-strong);border-radius:6px;font-family:inherit;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
+        <sc-if value="{{ hasSearch }}" hint-placeholder-val="{{ false }}">
+          <button type="button" sc-camel-on-click="{{ clearSearch }}" title="Clear search" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper-2);border:0;border-radius:50%;color:var(--muted);font-size:13px;line-height:1;cursor:pointer;padding:0;">×</button>
+        </sc-if>
+      </div>
     </div>
     <div style="padding:0 16px 14px;">
       <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Archetype</div>
@@ -153,13 +158,16 @@
     </div>
     <div style="padding:0 16px 6px;"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribes</span></div>
     <div style="padding:0 8px;">
-      <sc-for list="{{ tribesView }}" as="tribe" hint-placeholder-count="15">
+      <sc-for list="{{ tribesShown }}" as="tribe" hint-placeholder-count="15">
         <button type="button" sc-camel-on-click="{{ tribe.onClick }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:{{ tribe.bg }};border:0;border-radius:6px;box-shadow:{{ tribe.shadow }};padding:7px 10px;margin-bottom:1px;color:var(--ink);cursor:pointer;">
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ tribe.dotColor }};flex:none;"></span>
           <span style="font-size:12.5px;line-height:1.35;flex:1;">{{ tribe.label }}</span>
           <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">{{ tribe.count }}</span>
         </button>
       </sc-for>
+      <sc-if value="{{ noTribesMatch }}" hint-placeholder-val="{{ false }}">
+        <div style="padding:10px;font-size:12px;color:var(--muted);">No tribes match</div>
+      </sc-if>
     </div>
   </aside>
 
@@ -750,7 +758,6 @@ class Component extends DCLogic {
       if(st.archSet.size&&!st.archSet.has(s.a))return false;
       if(st.lvlSet.size&&!st.lvlSet.has(String(s.lvl)))return false;
       if(st.trackSet.size&&!st.trackSet.has(s.track))return false;
-      if(st.search&&s.name.toLowerCase().indexOf(st.search.toLowerCase())<0)return false;
       return true;
     });
   }
@@ -968,12 +975,18 @@ class Component extends DCLogic {
     st.archSet.forEach(function(a){filterChips.push({label:'Archetype: '+a,onClear:function(){self.toggleArch(a);}});});
     st.lvlSet.forEach(function(k){filterChips.push({label:'Level: '+LEVELS[+k].short,onClear:function(){self.toggleLvl(k);}});});
     st.trackSet.forEach(function(tk){filterChips.push({label:'Track: '+tk,onClear:function(){self.toggleTrack(tk);}});});
-    if(st.search)filterChips.push({label:'Search: '+st.search,onClear:function(){self.clearSearch();}});
     tiles[2].statusDist=['ok','warn','risk'].map(function(k2){
       const n2=tilesSrc.filter(function(s2){return statusKey(composite(s2).total)===k2;}).length;
       return {label:STATUS_LABEL[k2],color:STATUS_COLOR[k2],count:String(n2),pct:tilesSrc.length?Math.round(n2/tilesSrc.length*100):0};
     });
     tiles.forEach(function(t3){if(!t3.statusDist)t3.statusDist=[];});
+    const q=st.search.toLowerCase();
+    const tribesShown=q?tribesView.filter(function(tv){return tv.label.toLowerCase().indexOf(q)>=0;}):tribesView;
+    const searchKeyDown=function(e){
+      if(e.key!=='Enter')return;
+      const m=tribesShown.filter(function(x){return x.label!=='All tribes';});
+      if(m.length===1)m[0].onClick();
+    };
     const STATUS_TINT={'#0F7A6B':['var(--pos-bg)','var(--pos-ink)'],'#B4700E':['var(--warn-bg)','var(--warn-ink)'],'#A93B2C':['var(--neg-bg)','var(--neg-ink)']};
     dlCards.forEach(function(c2){
       const tint2=STATUS_TINT[c2.statusColor]||['var(--paper-2)','var(--ink-2)'];
@@ -989,6 +1002,8 @@ class Component extends DCLogic {
       seedLabel:'seed: bir-2026-'+PERIOD_SEED[st.period],
       periodsView:periodsView,
       search:st.search,setSearch:function(e){self.setSearch(e);},
+      tribesShown:tribesShown,noTribesMatch:tribesShown.length===0,hasSearch:st.search.length>0,
+      searchKeyDown:searchKeyDown,clearSearch:function(){self.clearSearch();},
       archetypesView:archetypesView,levelsView:levelsView,tracksView:tracksView,tribesView:tribesView,
       tiles:tiles,ladderRows:ladderRows,dlCount:String(DL_LIST.length),
       readyLabel:String(readyTotal),blockedLabel:String(blockedTotal),
