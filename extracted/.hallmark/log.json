@@ -1,6 +1,15 @@
 [
   {
     "date": "2026-08-20",
+    "macrostructure": "view-based app shell (Overview / Squads / Squad detail / Delivery Leads)",
+    "theme": "custom",
+    "theme_axes": "light / grotesk-sans / cool",
+    "vibe": "shadcn/Untitled-school calm dashboard, one view at a time",
+    "enrichment": "Tier-A inline SVG/CSS data-viz (bento, donut, mini-bars, badges)",
+    "brief": "Birbank squad/tribe dashboard · view-based IA + bento enrichment + global filter chips"
+  },
+  {
+    "date": "2026-08-20",
     "macrostructure": "app-dashboard card-grid (macro unlocked, full layout rebuild)",
     "theme": "custom",
     "theme_axes": "light / grotesk-sans / cool",

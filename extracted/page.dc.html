@@ -13,35 +13,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
   <style>
-    /* Hallmark · genre: modern-minimal · macrostructure: app-dashboard card-grid (macro unlocked this run)
-     * theme: custom · vibe: Linear/Stripe-school product analytics surface
-     * paper oklch(97.3% 0.004 240) grey-blue canvas · card near-white · accent #1F5F9E steel-blue (locked data hue)
-     * axes: light / grotesk-sans / cool — differs from previous (roman-serif · warm-bronze) on display style + accent hue
+    /* Hallmark · genre: modern-minimal · macrostructure: view-based app shell (Overview / Squads / Squad detail / Delivery Leads)
+     * theme: custom · vibe: shadcn/Untitled-school calm dashboard — one view on screen at a time
+     * paper oklch(98.2% 0.002 240) near-white canvas · white cards · accent #1F5F9E steel-blue (locked data hue)
+     * axes: light / grotesk-sans / cool — differs from previous run on macrostructure (card-grid → view-based IA)
      * display+body: Geist (single-family, genre discipline) · mono: Geist Mono (data register: numerals, codes, labels)
      * status palette locked to the dc-script data layer (hex values emitted by script, untouchable)
-     * nav: none · footer: none (embedded analytics view) · enrichment: none — typography only
+     * nav: sticky view-tabs (state-driven via DCLogic setState, no router) · footer: none
+     * enrichment: Tier-A inline SVG/CSS data-viz — bento grid, donut (On track), archetype mini-bars, composite progress bars, status badges
      * contrast: pass (40–41) · slop: pass (42–45) · honest: pass (46) · chrome: pass (47) · tokens: pass (48)
-     * responsive: pass (49) · mobile: pass (34, 49, 50–57) · note: {{ }}-bound colours are dc-script data, exempt from gate 48
-     * pre-emit critique: P4 H5 E4 S5 R4 V5
+     * responsive: pass (49) · mobile: pass (34, 49, 50–57) · sticky: nav z-300 top-0, sidebar top var(--nav-h) (gate 56)
+     * note: {{ }}-bound colours are dc-script data, exempt from gate 48
+     * pre-emit critique: P4 H5 E4 S5 R5 V5
      */
     :root{
       --font-display:'Geist',system-ui,-apple-system,sans-serif;
       --font-body:'Geist',system-ui,-apple-system,sans-serif;
       --font-mono:'Geist Mono',ui-monospace,'SF Mono',monospace;
 
-      --paper:oklch(97.3% 0.004 240);
-      --paper-2:oklch(95% 0.005 240);
-      --paper-3:oklch(98.4% 0.003 240);
-      --card:oklch(99.4% 0.002 240);
+      --paper:oklch(98.2% 0.002 240);
+      --paper-2:oklch(96% 0.004 240);
+      --paper-3:oklch(98.8% 0.002 240);
+      --card:oklch(99.7% 0.001 240);
       --ink:#0E2233;            /* locked: emitted by dc-script */
       --ink-2:#41586B;          /* locked: emitted by dc-script */
       --muted:oklch(50% 0.032 240);
       --selection:oklch(88% 0.045 245);
-      --rule:oklch(91% 0.007 240);
-      --rule-soft:oklch(94% 0.005 240);
+      --rule:oklch(92.7% 0.005 240);
+      --rule-soft:oklch(95.2% 0.004 240);
       --rule-strong:#C9D1D6;    /* locked: emitted by dc-script */
-      --track:oklch(93% 0.006 240);
-      --hover:oklch(97.3% 0.004 240);
+      --track:oklch(94% 0.005 240);
+      --hover:oklch(97.8% 0.003 240);
       --accent:#1F5F9E;         /* locked: dc-script technical-track blue doubles as UI accent */
       --focus:#1F5F9E;
 
@@ -51,9 +53,11 @@
       --neg:#A93B2C; --neg-bg:#FBF1EF; --neg-ink:#6B241A;
       --biz:#5B4BA8; --tech:#1F5F9E;
 
-      --radius-card:10px;
+      --radius-card:12px;
       --radius-ctl:6px;
-      --shadow-card:0 1px 2px oklch(20% 0.02 240 / 0.06);
+      --nav-h:45px;
+      --z-sticky-nav:300;
+      --shadow-card:0 1px 2px oklch(20% 0.02 240 / 0.05);
       --ease-out:cubic-bezier(0.16,1,0.3,1);
       --dur-micro:120ms;
       --dur-short:220ms;
@@ -70,16 +74,22 @@
     button,input[type="search"]{transition:background-color var(--dur-micro) var(--ease-out),border-color var(--dur-micro) var(--ease-out),color var(--dur-micro) var(--ease-out),box-shadow var(--dur-micro) var(--ease-out);}
     input:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offset:1px;}
     input[type="search"]:focus-visible{border-color:var(--focus) !important;}
-    [data-stp-side]{position:sticky;top:0;max-height:100dvh;overflow-y:auto;overscroll-behavior:contain;}
-    [data-stp-shell]{animation:hm-enter 420ms var(--ease-out) both;}
+    nav[aria-label="Views"]{z-index:var(--z-sticky-nav);}
+    [data-stp-side]{position:sticky;top:var(--nav-h);max-height:calc(100dvh - var(--nav-h));overflow-y:auto;overscroll-behavior:contain;}
+    main{animation:hm-enter 300ms var(--ease-out) both;}
     @keyframes hm-enter{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
     @media (prefers-reduced-motion:reduce){
       *,*::before,*::after{animation-duration:1ms !important;transition-duration:1ms !important;}
     }
     @media (max-width:1080px){
+      [data-bento]{grid-template-columns:repeat(2,minmax(0,1fr)) !important;}
+      [data-bento]>div{grid-area:auto !important;}
       [data-stp-shell]{grid-template-columns:1fr !important;}
       [data-stp-side]{position:static !important;max-height:none !important;border-right:0 !important;border-bottom:1px solid var(--rule) !important;min-height:0 !important;}
       [data-stp-split]{grid-template-columns:1fr !important;}
+    }
+    @media (max-width:560px){
+      [data-bento]{grid-template-columns:1fr !important;}
     }
   </style>
 </helmet>
@@ -102,8 +112,15 @@
   </div>
 </div>
 
-<div data-stp-shell="true" style="display:grid;grid-template-columns:240px minmax(0,1fr);gap:0;align-items:start;">
-  <aside data-stp-side="true" style="border-right:1px solid var(--rule);min-height:70vh;padding:14px 0 32px;">
+<nav aria-label="Views" style="position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1px solid var(--rule);padding:0 24px;display:flex;gap:4px;align-items:stretch;">
+  <sc-for list="{{ nav }}" as="nv" hint-placeholder-count="3">
+    <button type="button" sc-camel-on-click="{{ nv.onClick }}" style="background:none;border:0;border-bottom:2px solid {{ nv.underline }};margin-bottom:-1px;color:{{ nv.color }};font-weight:{{ nv.weight }};font-size:13px;padding:12px;cursor:pointer;white-space:nowrap;">{{ nv.label }}</button>
+  </sc-for>
+</nav>
+
+<sc-if value="{{ notSelected }}" hint-placeholder-val="{{ true }}">
+<div data-stp-shell="true" style="display:grid;grid-template-columns:240px minmax(0,1fr);gap:16px;align-items:start;padding:0 24px;">
+  <aside data-stp-side="true" style="min-height:60vh;padding:16px 8px 32px 0;">
     <div style="padding:0 16px 14px;">
       <label style="display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Search squad</label>
       <input type="search" placeholder="Cards Journey" autocomplete="off" value="{{ search }}" sc-camel-on-change="{{ setSearch }}" style="width:100%;padding:7px 10px;border:1px solid var(--rule-strong);border-radius:6px;font-family:inherit;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
@@ -146,32 +163,72 @@
     </div>
   </aside>
 
-  <main style="padding:20px 24px 72px;min-width:0;">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:12px;margin-bottom:20px;">
+  <main style="padding:20px 0 72px;min-width:0;">
+    <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;">
+        <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="2">
+          <button type="button" sc-camel-on-click="{{ fc.onClear }}" title="Remove filter" style="display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap;">{{ fc.label }}<span aria-hidden="true" style="font-size:13px;line-height:1;color:var(--muted);">×</span></button>
+        </sc-for>
+        <button type="button" sc-camel-on-click="{{ clearAll }}" style="background:none;border:0;color:var(--tech);font-size:12px;cursor:pointer;padding:4px 6px;text-decoration:underline;white-space:nowrap;">Clear all</button>
+      </div>
+    </sc-if>
+    <sc-if value="{{ viewOverview }}" hint-placeholder-val="{{ true }}">
+    <div data-bento="true" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:24px;">
       <sc-for list="{{ tiles }}" as="tile" hint-placeholder-count="6">
-        <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:16px 16px 12px;">
+        <div style="grid-area:{{ tile.area }};background:{{ tile.bg }};border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;min-width:0;display:flex;flex-direction:column;">
           <div style="font-size:11.5px;font-weight:500;color:var(--muted);">{{ tile.k }}</div>
-          <div style="font-family:var(--font-display);font-size:24px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;margin-top:6px;font-variant-numeric:tabular-nums;">{{ tile.v }}</div>
-          <div style="font-size:11.5px;color:var(--ink-2);margin-top:2px;">{{ tile.s }}</div>
+          <sc-if value="{{ tile.isDonut }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:center;gap:22px;margin-top:8px;flex:1;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:18px;flex:none;">
+                <svg width="80" height="80" sc-camel-view-box="0 0 80 80" aria-hidden="true" style="flex:none;">
+                  <circle cx="40" cy="40" r="30" fill="none" stroke="var(--track)" stroke-width="9"></circle>
+                  <circle cx="40" cy="40" r="30" fill="none" stroke="var(--pos)" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{ tile.donutDash }}" transform="rotate(-90 40 40)"></circle>
+                </svg>
+                <div style="min-width:0;">
+                  <div style="display:flex;align-items:baseline;gap:8px;"><span style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;">{{ tile.v }}</span><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--pos-ink);">{{ tile.pctLabel }}</span></div>
+                  <div style="font-size:12px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
+                </div>
+              </div>
+              <div style="flex:1;min-width:150px;">
+                <div style="display:flex;height:10px;border-radius:5px;overflow:hidden;background:var(--track);" aria-hidden="true">
+                  <sc-for list="{{ tile.statusDist }}" as="sd" hint-placeholder-count="3">
+                    <span style="display:block;height:100%;width:{{ sd.pct }}%;background:{{ sd.color }};" title="{{ sd.count }}"></span>
+                  </sc-for>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+                  <sc-for list="{{ tile.statusDist }}" as="sd2" hint-placeholder-count="3">
+                    <span style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2);white-space:nowrap;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ sd2.color }};flex:none;"></span><span style="flex:1;min-width:0;">{{ sd2.label }}</span><span style="font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink);">{{ sd2.count }}</span></span>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ tile.isDist }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;align-items:baseline;gap:10px;margin-top:8px;">
+              <div style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;font-variant-numeric:tabular-nums;">{{ tile.v }}</div>
+              <div style="font-size:12px;color:var(--muted);">{{ tile.s }}</div>
+            </div>
+            <div style="height:56px;display:flex;align-items:flex-end;gap:8px;margin-top:12px;">
+              <sc-for list="{{ tile.dist }}" as="d" hint-placeholder-count="6">
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;min-width:0;">
+                  <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;">{{ d.count }}</span>
+                  <span style="display:block;width:100%;height:{{ d.pct }}%;background:{{ d.color }};border-radius:4px;min-height:8px;" title="{{ d.count }}"></span>
+                </div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:6px;">
+              <sc-for list="{{ tile.dist }}" as="d2" hint-placeholder-count="6">
+                <span style="flex:1;text-align:center;font-family:var(--font-mono);font-size:10px;color:var(--muted);" title="{{ d2.count }}">{{ d2.code }}</span>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ tile.plain }}" hint-placeholder-val="{{ true }}">
+            <div style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;margin-top:8px;font-variant-numeric:tabular-nums;">{{ tile.v }}</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
+          </sc-if>
         </div>
       </sc-for>
     </div>
-
-    <sc-if value="{{ notSelected }}" hint-placeholder-val="{{ true }}">
-      <sc-if value="{{ dlCard }}" hint-placeholder-val="{{ false }}">
-        <div sc-camel-on-click="{{ dlCard.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:16px;display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px;cursor:pointer;flex-wrap:wrap;" style-hover="border-color:var(--rule-strong);">
-          <div>
-            <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribe Delivery Lead</div>
-            <div style="font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-0.01em;margin-top:2px;">{{ dlCard.code }} · {{ dlCard.squadCount }} squads · {{ dlCard.fte }} FTE</div>
-          </div>
-          <div style="display:flex;gap:22px;align-items:center;">
-            <div style="text-align:right;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Delivery</div><div style="font-family:var(--font-mono);font-size:16px;font-weight:500;">{{ dlCard.deliveryHealth }}</div></div>
-            <div style="text-align:right;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Talent</div><div style="font-family:var(--font-mono);font-size:16px;font-weight:500;">{{ dlCard.teamTalent }}</div></div>
-            <div style="text-align:right;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Composite</div><div style="font-family:var(--font-mono);font-size:16px;font-weight:500;">{{ dlCard.compositeDL }}</div></div>
-            <span style="font-size:12px;color:var(--ink-2);display:flex;gap:6px;align-items:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ dlCard.statusColor }};flex:none;"></span>{{ dlCard.statusLabel }}</span>
-          </div>
-        </div>
-      </sc-if>
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
@@ -182,16 +239,16 @@
           <sc-for list="{{ ladderRows }}" as="lr" hint-placeholder-count="3">
             <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);">
               <div><span style="font-size:13px;font-weight:500;">{{ lr.label }}</span><small style="display:block;color:var(--muted);font-size:11px;">{{ lr.sub }}</small></div>
-              <div style="display:flex;height:15px;border-radius:4px;overflow:hidden;background:var(--track);">
-                <span style="display:block;height:100%;background:var(--biz);width:{{ lr.bizPct }}%;"></span>
-                <span style="display:block;height:100%;background:var(--tech);width:{{ lr.techPct }}%;"></span>
+              <div style="display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--track);">
+                <span style="display:block;height:100%;background:var(--biz);width:{{ lr.bizPct }}%;" title="{{ lr.bizCount }}"></span>
+                <span style="display:block;height:100%;background:var(--tech);width:{{ lr.techPct }}%;" title="{{ lr.techCount }}"></span>
               </div>
               <span style="font-family:var(--font-mono);font-size:12.5px;text-align:right;">{{ lr.count }} · B{{ lr.bizCount }} / T{{ lr.techCount }}</span>
             </div>
           </sc-for>
           <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:10px 0;border-top:2px solid var(--rule-strong);">
             <div><span style="font-size:13px;font-weight:500;">Delivery Lead</span><small style="display:block;color:var(--muted);font-size:11px;">parallel role, tribe level</small></div>
-            <div style="height:15px;border-radius:4px;overflow:hidden;background:var(--track);"><span style="display:block;height:100%;background:var(--ink-2);width:100%;"></span></div>
+            <div style="height:18px;border-radius:9px;overflow:hidden;background:var(--track);"><span style="display:block;height:100%;background:var(--ink-2);width:100%;" title="{{ dlCount }}"></span></div>
             <span style="font-family:var(--font-mono);font-size:12.5px;text-align:right;">{{ dlCount }} · across tribes</span>
           </div>
         </div>
@@ -201,52 +258,66 @@
           <span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Delivery Lead</b> moving into it is not a step up the IC ladder</span>
         </div>
       </div>
-
+    </sc-if>
+    <sc-if value="{{ viewSquads }}" hint-placeholder-val="{{ false }}">
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">{{ tribeTitle }} — squads and Product Owners</h2>
           <span style="font-size:11.5px;color:var(--muted);">{{ rows.length }} squads</span>
         </header>
         <div style="overflow-x:auto;">
-          <div style="min-width:960px;">
-            <div style="display:grid;grid-template-columns:28px minmax(200px,1fr) 130px 130px 100px 56px 54px 54px 78px 76px 140px;gap:8px;padding:8px 12px;border-bottom:1px solid var(--rule);font-size:11.5px;font-weight:500;color:var(--muted);">
-              <span></span><span>Squad</span><span>PO / track</span><span>Level</span><span>Gates</span><span style="text-align:right;">Outcome 40</span><span style="text-align:right;">AMI 30</span><span style="text-align:right;">AC 30</span><span style="text-align:right;">Composite</span><span>Trend</span><span>Status</span>
+          <div style="min-width:680px;">
+            <div style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:8px 12px;border-bottom:1px solid var(--rule);font-size:11.5px;font-weight:500;color:var(--muted);">
+              <span></span><span>Squad</span><span>PO / track</span><span>Level</span><span style="text-align:right;">Composite</span><span>Status</span>
             </div>
             <sc-for list="{{ rows }}" as="row" hint-placeholder-count="10">
-              <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(200px,1fr) 130px 130px 100px 56px 54px 54px 78px 76px 140px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;" style-hover="background:var(--hover);">
+              <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;" style-hover="background:var(--hover);">
                 <span style="display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:4px;font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--card);background:{{ row.archColor }};">{{ row.archCode }}</span>
                 <span><div style="font-size:13px;">{{ row.name }}</div><div style="font-size:11px;color:var(--muted);">{{ row.tribe }}</div></span>
                 <span><div style="font-family:var(--font-mono);font-size:13px;">{{ row.po }}</div><div style="font-size:10.5px;color:var(--muted);font-variant:small-caps;letter-spacing:0.04em;">{{ row.trackShort }}</div></span>
                 <span><span style="font-family:var(--font-mono);font-size:11px;border:1px solid {{ row.levelBorder }};border-radius:4px;padding:1px 6px;color:{{ row.levelColor }};white-space:nowrap;">{{ row.levelText }}</span></span>
-                <span>
-                  <sc-if value="{{ row.gatesTop }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-mono);font-size:10.5px;border:1px solid var(--ink);border-radius:4px;padding:1px 6px;color:var(--ink);">top of ladder</span></sc-if>
-                  <sc-if value="{{ row.gatesNotTop }}" hint-placeholder-val="{{ true }}">
-                    <span style="display:flex;gap:3px;">
-                      <sc-for list="{{ row.gates }}" as="g" hint-placeholder-count="4">
-                        <span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:16px;border-radius:4px;font-family:var(--font-mono);font-size:9.5px;border:1px solid var(--rule-strong);background:{{ g.bg }};color:{{ g.fg }};" title="{{ g.condition }}">{{ g.code }}</span>
-                      </sc-for>
-                    </span>
-                  </sc-if>
+                <span style="display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;">
+                  <span style="width:48px;height:5px;border-radius:3px;background:var(--track);overflow:hidden;display:inline-block;flex:none;" aria-hidden="true"><span style="display:block;height:100%;border-radius:3px;background:{{ row.statusColor }};width:{{ row.compositePct }}%;"></span></span>
+                  <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:500;">{{ row.compositeText }}</span>
                 </span>
-                <span style="text-align:right;font-family:var(--font-mono);">{{ row.outcomeText }}</span>
-                <span style="text-align:right;font-family:var(--font-mono);">{{ row.ami }}</span>
-                <span style="text-align:right;font-family:var(--font-mono);">{{ row.ac }}</span>
-                <span style="text-align:right;font-family:var(--font-mono);font-weight:500;">{{ row.compositeText }}</span>
-                <span><svg width="70" height="20" sc-camel-view-box="0 0 70 20" aria-hidden="true"><path d="{{ row.sparkPath }}" fill="none" stroke="{{ row.sparkColor }}" stroke-width="1.4"></path></svg></span>
-                <span style="font-size:12px;color:var(--ink-2);display:flex;gap:6px;align-items:center;white-space:nowrap;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ row.statusColor }};flex:none;"></span>{{ row.statusLabel }}</span>
+                <span style="display:flex;"><span style="display:inline-flex;align-items:center;gap:6px;background:{{ row.statusBg }};color:{{ row.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ row.statusColor }};flex:none;"></span>{{ row.statusLabel }}</span></span>
               </div>
             </sc-for>
           </div>
         </div>
         <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--ink-2);padding:8px 16px;border-top:1px solid var(--rule);background:var(--paper-3);">
-          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Gates</b> green passed · amber in progress · red blocked</span>
           <sc-if value="{{ hasStarNote }}" hint-placeholder-val="{{ false }}"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">*</b> outcome not attributed: tenure under 2 quarters</span></sc-if>
         </div>
       </div>
       <div style="border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;padding:12px;font-size:12.5px;color:var(--ink-2);">Delivery and flow metrics are intentionally absent from this table: they live on the Delivery Lead card, where they are a direct responsibility, and in the squad's diagnostic panel.</div>
     </sc-if>
+    <sc-if value="{{ viewDL }}" hint-placeholder-val="{{ false }}">
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
+      <sc-for list="{{ dlCards }}" as="dl" hint-placeholder-count="8">
+        <div sc-camel-on-click="{{ dl.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:14px;cursor:pointer;min-width:0;" style-hover="border-color:var(--rule-strong);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
+            <div style="min-width:0;">
+              <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribe Delivery Lead</div>
+              <div style="font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-0.01em;margin-top:3px;">{{ dl.tribe }}</div>
+              <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ dl.code }} · {{ dl.squadCount }} squads · {{ dl.fte }} FTE</div>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:6px;background:{{ dl.statusBg }};color:{{ dl.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;flex:none;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ dl.statusColor }};flex:none;"></span>{{ dl.statusLabel }}</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;border-top:1px solid var(--rule-soft);padding-top:12px;">
+            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Delivery</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.deliveryHealth }}</div></div>
+            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Talent</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.teamTalent }}</div></div>
+            <div style="text-align:right;min-width:0;"><div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Composite</div><div style="font-family:var(--font-mono);font-size:18px;font-weight:500;font-variant-numeric:tabular-nums;margin-top:2px;">{{ dl.compositeDL }}</div></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    </sc-if>
+  </main>
+</div>
+</sc-if>
 
-    <sc-if value="{{ selectedSquad }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ selectedSquad }}" hint-placeholder-val="{{ false }}">
+  <main style="padding:20px 24px 72px;max-width:1120px;min-width:0;">
       <div style="font-size:12px;color:var(--muted);margin-bottom:10px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12px;">{{ tribeTitle }}</button> / {{ selectedSquad.name }}</div>
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
@@ -332,6 +403,7 @@
                   </div>
                 </sc-for>
               </div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:8px;"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Gates</b> green passed · amber in progress · red blocked</span></div>
               <sc-if value="{{ selectedSquad.isReady }}" hint-placeholder-val="{{ false }}">
                 <div style="border:1px solid var(--pos);background:var(--pos-bg);border-radius:8px;padding:12px;font-size:12.5px;margin-top:12px;color:var(--pos-ink);">All gates passed — a candidate for promotion to {{ selectedSquad.nextLevelName }} this cycle.</div>
               </sc-if>
@@ -379,9 +451,11 @@
           </div>
         </div>
       </div>
-    </sc-if>
+  </main>
+</sc-if>
 
-    <sc-if value="{{ selectedRole }}" hint-placeholder-val="{{ false }}">
+<sc-if value="{{ selectedRole }}" hint-placeholder-val="{{ false }}">
+  <main style="padding:20px 24px 72px;max-width:1120px;min-width:0;">
       <div style="font-size:12px;color:var(--muted);margin-bottom:10px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12px;">{{ selectedRole.tribe }}</button> / Delivery Lead</div>
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
@@ -466,9 +540,8 @@
           </div>
         </div>
       </div>
-    </sc-if>
   </main>
-</div>
+</sc-if>
 
 <footer style="padding:22px 20px 50px;border-top:1px solid var(--rule);color:var(--muted);font-size:11.5px;max-width:96ch;">Ladder in this simulation: Product Owner (grade 10) → Senior Product Owner (11) → Expert Product Owner (12) — three IC levels, each in a Business PO or Technical PO track. Delivery Lead is a parallel role at the tribe level with its own KPI set, not a fourth rung on the IC ladder: moving into it is not a promotion and does not require passing the Expert gate. Promotion gates: G0 eligibility (tenure and results), G1 assessment centre, G2 360 and individual KPI, G3 panel interview with a Bar Raiser. PO composite = 40% product outcome (percentile within archetype × contribution quality filter) + 30% AMI + 30% competency/AC. Delivery Lead composite = 40% delivery health + 30% team &amp; talent + 30% portfolio outcome. Delivery and flow metrics never feed into Product Owner KPI — they feed into Delivery Lead KPI, where they are a direct responsibility.</footer>
 
@@ -655,7 +728,7 @@ const PERIOD_LABELS=['Q2 2026','Q1 2026','Q4 2025'];
 const PERIOD_SEED=['q2','q1','q4'];
 
 class Component extends DCLogic {
-  state={period:0,tribe:null,squadName:null,dlTribe:null,archSet:new Set(),lvlSet:new Set(),trackSet:new Set(),search:''};
+  state={period:0,view:'overview',tribe:null,squadName:null,dlTribe:null,archSet:new Set(),lvlSet:new Set(),trackSet:new Set(),search:''};
 
   toggleArch(a){this.setState(function(s){const next=new Set(s.archSet);next.has(a)?next.delete(a):next.add(a);return {archSet:next,squadName:null,dlTribe:null};});}
   toggleLvl(i){this.setState(function(s){const next=new Set(s.lvlSet);next.has(i)?next.delete(i):next.add(i);return {lvlSet:next,squadName:null,dlTribe:null};});}
@@ -666,6 +739,10 @@ class Component extends DCLogic {
   openSquad(name){this.setState({squadName:name,dlTribe:null});}
   openRole(tribeName){this.setState({dlTribe:tribeName,squadName:null});}
   back(){this.setState({squadName:null,dlTribe:null});}
+  setView(v){this.setState({view:v,squadName:null,dlTribe:null});}
+  clearSearch(){this.setState({search:'',squadName:null,dlTribe:null});}
+  clearTribe(){this.setState({tribe:null,squadName:null,dlTribe:null});}
+  clearAllFilters(){this.setState({tribe:null,archSet:new Set(),lvlSet:new Set(),trackSet:new Set(),search:'',squadName:null,dlTribe:null});}
 
   visible(){
     const st=this.state;
@@ -856,9 +933,56 @@ class Component extends DCLogic {
       }
     }
 
+    const NAV_ITEMS=[['overview','Overview'],['squads','Squads'],['dl','Delivery Leads']];
+    const nav=NAV_ITEMS.map(function(it){
+      const active=st.view===it[0];
+      return {label:it[1],underline:active?'#0E2233':'transparent',color:active?'#0E2233':'#5E7181',weight:active?'600':'500',onClick:function(){self.setView(it[0]);}};
+    });
+    const dlCards=DL_LIST.filter(function(d){return !st.tribe||d.tribe===st.tribe;}).map(function(d){
+      return {tribe:d.tribe,code:d.id,squadCount:d.squads,fte:d.fte,
+        deliveryHealth:d.delivery,teamTalent:d.talent,compositeDL:d.total,
+        statusColor:STATUS_COLOR[statusKey(d.total)],statusLabel:STATUS_LABEL[statusKey(d.total)],
+        onClick:function(){self.openRole(d.tribe);}};
+    });
     const periodsView=PERIOD_LABELS.map(function(label,idx){
       const active=st.period===idx;
       return {label:label,bg:active?'#0E2233':'#FFFFFF',color:active?'#FFFFFF':'#41586B',onClick:function(){self.setPeriod(idx);}};
+    });
+
+    // Hallmark bento presentation fields — additive only, existing data and logic untouched
+    const donutCirc=2*Math.PI*30;
+    const onPct=tilesSrc.length?okCount/tilesSrc.length*100:0;
+    const distCounts=ARCH_CODES.map(function(a){return tilesSrc.filter(function(s2){return s2.a===a;}).length;});
+    const distMax=Math.max.apply(null,distCounts.concat([1]));
+    tiles.forEach(function(t2,i){
+      t2.area=['1 / 3 / 2 / 5','2 / 1 / 3 / 2','1 / 1 / 2 / 3','2 / 2 / 3 / 3','2 / 3 / 3 / 4','2 / 4 / 3 / 5'][i]||'auto';
+      t2.bg=(i===3&&pipe>0)?'var(--pos-bg)':((i===5&&noAC>0)?'var(--neg-bg)':'var(--card)');
+      t2.isDonut=i===2;t2.isDist=i===0;t2.plain=i!==2&&i!==0;
+      t2.dist=i===0?ARCH_CODES.map(function(a,j){return {code:a,count:String(distCounts[j]),color:ARCH_COLORS[a],pct:Math.max(5,Math.round(distCounts[j]/distMax*100))};}):[];
+      t2.donutDash=i===2?((onPct/100*donutCirc).toFixed(1)+' '+donutCirc.toFixed(1)):'0 999';
+      t2.pctLabel=i===2?(Math.round(onPct)+'%'):'';
+    });
+    tiles[0].v=tilesSrc.length+' / '+SQUADS.length;
+    const filterChips=[];
+    if(st.tribe)filterChips.push({label:'Tribe: '+st.tribe,onClear:function(){self.clearTribe();}});
+    st.archSet.forEach(function(a){filterChips.push({label:'Archetype: '+a,onClear:function(){self.toggleArch(a);}});});
+    st.lvlSet.forEach(function(k){filterChips.push({label:'Level: '+LEVELS[+k].short,onClear:function(){self.toggleLvl(k);}});});
+    st.trackSet.forEach(function(tk){filterChips.push({label:'Track: '+tk,onClear:function(){self.toggleTrack(tk);}});});
+    if(st.search)filterChips.push({label:'Search: '+st.search,onClear:function(){self.clearSearch();}});
+    tiles[2].statusDist=['ok','warn','risk'].map(function(k2){
+      const n2=tilesSrc.filter(function(s2){return statusKey(composite(s2).total)===k2;}).length;
+      return {label:STATUS_LABEL[k2],color:STATUS_COLOR[k2],count:String(n2),pct:tilesSrc.length?Math.round(n2/tilesSrc.length*100):0};
+    });
+    tiles.forEach(function(t3){if(!t3.statusDist)t3.statusDist=[];});
+    const STATUS_TINT={'#0F7A6B':['var(--pos-bg)','var(--pos-ink)'],'#B4700E':['var(--warn-bg)','var(--warn-ink)'],'#A93B2C':['var(--neg-bg)','var(--neg-ink)']};
+    dlCards.forEach(function(c2){
+      const tint2=STATUS_TINT[c2.statusColor]||['var(--paper-2)','var(--ink-2)'];
+      c2.statusBg=tint2[0];c2.statusInk=tint2[1];
+    });
+    rows.forEach(function(r0){
+      r0.compositePct=Math.max(0,Math.min(100,parseInt(r0.compositeText,10)||0));
+      const tint=STATUS_TINT[r0.statusColor]||['var(--paper-2)','var(--ink-2)'];
+      r0.statusBg=tint[0];r0.statusInk=tint[1];
     });
 
     return {
@@ -870,6 +994,11 @@ class Component extends DCLogic {
       readyLabel:String(readyTotal),blockedLabel:String(blockedTotal),
       tribeTitle:st.tribe||'All tribes',hasStarNote:hasStarNote,
       rows:rows,dlCard:dlCard,notSelected:!st.squadName&&!st.dlTribe,
+      nav:nav,dlCards:dlCards,
+      filterChips:filterChips,hasFilters:filterChips.length>0,clearAll:function(){self.clearAllFilters();},
+      viewOverview:st.view==='overview'&&!st.squadName&&!st.dlTribe,
+      viewSquads:st.view==='squads'&&!st.squadName&&!st.dlTribe,
+      viewDL:st.view==='dl'&&!st.squadName&&!st.dlTribe,
       selectedSquad:selectedSquad,selectedRole:selectedRole,backToList:function(){self.back();}
     };
   }
