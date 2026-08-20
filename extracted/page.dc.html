@@ -58,6 +58,7 @@
       --nav-h:45px;
       --z-sticky-nav:300;
       --shadow-card:0 1px 2px oklch(20% 0.02 240 / 0.05);
+      --shadow-hover:0 3px 8px oklch(20% 0.02 240 / 0.09);
       --ease-out:cubic-bezier(0.16,1,0.3,1);
       --dur-micro:120ms;
       --dur-short:220ms;
@@ -80,8 +81,24 @@
     input[type="search"]:focus-visible{border-color:var(--focus) !important;}
     nav[aria-label="Views"]{z-index:var(--z-sticky-nav);}
     [data-stp-side]{position:sticky;top:var(--nav-h);max-height:calc(100dvh - var(--nav-h));overflow-y:auto;overscroll-behavior:contain;}
-    main{animation:hm-enter 300ms var(--ease-out) both;}
-    @keyframes hm-enter{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+    /* view + detail entrances: new content fades in with a 5px rise; exits are instant (unmount) */
+    main>*{animation:hm-view 180ms var(--ease-out) both;}
+    @keyframes hm-view{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+    /* hover transitions: only elements whose inline style actually changes animate (clickable cards, rows) */
+    main div{transition:background-color 120ms var(--ease-out),border-color 120ms var(--ease-out),box-shadow 120ms var(--ease-out),transform 120ms var(--ease-out);}
+    @media (hover:hover) and (pointer:fine){
+      main div[style*="cursor: pointer"][style*="grid-template-columns"]:hover{background:var(--hover);}
+      main div[style*="cursor: pointer"][style*="flex-direction: column"]:hover{border-color:var(--rule-strong) !important;box-shadow:var(--shadow-hover) !important;transform:translateY(-1px);}
+    }
+    /* sliding tab underline */
+    nav[aria-label="Views"] button{position:relative;}
+    nav[aria-label="Views"] button span[aria-hidden]{transition:transform 180ms var(--ease-out);}
+    /* filter chips: scale+fade on mount */
+    [data-chips]>button{animation:hm-chip 140ms var(--ease-out) both;}
+    @keyframes hm-chip{from{opacity:0;transform:scale(0.95);}to{opacity:1;transform:none;}}
+    /* donut arcs: fill from zero on first paint (@starting-style), morph smoothly on data change */
+    circle[stroke-dasharray]{transition:stroke-dasharray 400ms var(--ease-out);}
+    @starting-style{circle[stroke-dasharray]{stroke-dasharray:0 999;}}
     @media (prefers-reduced-motion:reduce){
       *,*::before,*::after{animation-duration:1ms !important;transition-duration:1ms !important;}
     }
@@ -118,7 +135,7 @@
 
 <nav aria-label="Views" style="position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1px solid var(--rule);padding:0 24px;display:flex;gap:4px;align-items:stretch;">
   <sc-for list="{{ nav }}" as="nv" hint-placeholder-count="3">
-    <button type="button" sc-camel-on-click="{{ nv.onClick }}" style="background:none;border:0;border-bottom:2px solid {{ nv.underline }};margin-bottom:-1px;color:{{ nv.color }};font-weight:{{ nv.weight }};font-size:13.5px;padding:12px;cursor:pointer;white-space:nowrap;">{{ nv.label }}</button>
+    <button type="button" sc-camel-on-click="{{ nv.onClick }}" style="background:none;border:0;color:{{ nv.color }};font-weight:{{ nv.weight }};font-size:13.5px;padding:12px;cursor:pointer;white-space:nowrap;">{{ nv.label }}<span aria-hidden="true" style="position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--ink);border-radius:1px;transform:scaleX({{ nv.scale }});"></span></button>
   </sc-for>
 </nav>
 
@@ -178,7 +195,7 @@
 
   <main style="padding:20px 0 72px;min-width:0;">
     <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
-      <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;">
+      <div data-chips="true" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;">
         <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="2">
           <button type="button" sc-camel-on-click="{{ fc.onClear }}" title="Remove filter" style="display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--ink-2);cursor:pointer;white-space:nowrap;">{{ fc.label }}<span aria-hidden="true" style="font-size:13.5px;line-height:1;color:var(--muted);">×</span></button>
         </sc-for>
@@ -284,7 +301,7 @@
               <span></span><span>Squad</span><span>PO / track</span><span>Level</span><span style="text-align:right;padding-right:18px;">Composite</span><span>Status</span>
             </div>
             <sc-for list="{{ rows }}" as="row" hint-placeholder-count="10">
-              <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;" style-hover="background:var(--hover);">
+              <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;">
                 <span style="display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:4px;font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--card);background:{{ row.archColor }};">{{ row.archCode }}</span>
                 <span><div style="font-size:13.5px;">{{ row.name }}</div><div style="font-size:11.5px;color:var(--muted);">{{ row.tribe }}</div></span>
                 <span><div style="font-family:var(--font-mono);font-size:13.5px;">{{ row.po }}</div><div style="font-size:10px;color:var(--muted);font-variant:small-caps;letter-spacing:0.04em;">{{ row.trackShort }}</div></span>
@@ -308,7 +325,7 @@
     <sc-if value="{{ viewDL }}" hint-placeholder-val="{{ false }}">
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
       <sc-for list="{{ dlCards }}" as="dl" hint-placeholder-count="8">
-        <div sc-camel-on-click="{{ dl.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;min-width:0;" style-hover="border-color:var(--rule-strong);">
+        <div sc-camel-on-click="{{ dl.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;min-width:0;">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
             <div style="min-width:0;">
               <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribe Delivery Lead</div>
@@ -969,7 +986,7 @@ class Component extends DCLogic {
     const NAV_ITEMS=[['overview','Overview'],['squads','Squads'],['dl','Delivery Leads']];
     const nav=NAV_ITEMS.map(function(it){
       const active=st.view===it[0];
-      return {label:it[1],underline:active?'#0E2233':'transparent',color:active?'#0E2233':'#5E7181',weight:active?'600':'500',onClick:function(){self.setView(it[0]);}};
+      return {label:it[1],underline:active?'#0E2233':'transparent',scale:active?'1':'0',color:active?'#0E2233':'#5E7181',weight:active?'600':'500',onClick:function(){self.setView(it[0]);}};
     });
     const dlCards=DL_LIST.filter(function(d){return !st.tribe||d.tribe===st.tribe;}).map(function(d){
       return {tribe:d.tribe,code:d.id,squadCount:d.squads,fte:d.fte,
