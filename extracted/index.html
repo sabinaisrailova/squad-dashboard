@@ -3,15 +3,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Squad, tribe, and role development</title>
+<script>
+window.__resources = {
+  "https://unpkg.com/react@18.3.1/umd/react.production.min.js": "vendor/react.production.min.js",
+  "https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js": "vendor/react-dom.production.min.js",
+  "https://unpkg.com/@babel/standalone@7.29.0/babel.min.js": "vendor/babel.min.js"
+};
+</script>
 <script src="dc-runtime.js"></script>
 </head>
 <body>
 <x-dc>
 
 <helmet>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="true">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="fonts/fonts.css">
   <style>
     /* Hallmark · genre: modern-minimal · macrostructure: view-based app shell (Overview / Squads / Squad detail / Delivery Leads)
      * theme: custom · vibe: shadcn/Untitled-school calm dashboard — one view on screen at a time
