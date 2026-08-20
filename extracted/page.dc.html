@@ -66,6 +66,10 @@
     html{overflow-x:clip;}
     body{overflow-x:clip;margin:0;padding:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:13.5px;line-height:1.5;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
     ::selection{background:var(--selection);color:var(--ink);}
+    :root{accent-color:var(--focus);}
+    input,textarea{caret-color:var(--focus);}
+    button,a{text-underline-offset:2px;}
+    *{scrollbar-width:thin;scrollbar-color:var(--rule-strong) transparent;}
     a{color:var(--tech);} a:hover{color:var(--ink);}
     h1,h2,h3{font-style:normal;overflow-wrap:anywhere;min-width:0;}
     button{font-family:var(--font-body);}
@@ -94,16 +98,16 @@
   </style>
 </helmet>
 
-<div style="background:var(--warn-bg);color:var(--warn-ink);border-bottom:1px solid var(--rule);padding:8px 24px;font-size:12px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
+<div style="background:var(--warn-bg);color:var(--warn-ink);border-bottom:1px solid var(--rule);padding:8px 24px;font-size:12.5px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;">
   <span style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0;"><b style="font-weight:600;font-family:var(--font-body);">Simulation.</b> Values are generated to demonstrate structure. No real data here.</span>
   <span style="font-family:var(--font-mono);white-space:nowrap;flex-shrink:0;color:var(--warn-ink);">{{ seedLabel }}</span>
 </div>
 
 <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px;padding:20px 24px 16px;border-bottom:1px solid var(--rule);flex-wrap:wrap;">
   <div>
-    <div style="font-family:var(--font-body);font-size:12px;font-weight:500;color:var(--muted);">Squad &amp; tribe performance · v2</div>
+    <div style="font-family:var(--font-body);font-size:12.5px;font-weight:500;color:var(--muted);">Squad &amp; tribe performance · v2</div>
     <h1 style="font-family:var(--font-display);font-weight:600;font-size:22px;letter-spacing:-0.02em;line-height:1.25;margin:4px 0 0;">Squad, tribe, and role development</h1>
-    <p style="margin:6px 0 0;color:var(--ink-2);font-size:13px;max-width:64ch;">The diagnostic loop is open. Assessment is closed, shown on cards. Ladder: three PO IC levels across two tracks, plus Delivery Lead as a separate role, not a step up.</p>
+    <p style="margin:6px 0 0;color:var(--ink-2);font-size:13.5px;max-width:64ch;">The diagnostic loop is open. Assessment is closed, shown on cards. Ladder: three PO IC levels across two tracks, plus Delivery Lead as a separate role, not a step up.</p>
   </div>
   <div style="display:flex;border:1px solid var(--rule-strong);border-radius:8px;overflow:hidden;flex:none;box-shadow:var(--shadow-card);">
     <sc-for list="{{ periodsView }}" as="p" hint-placeholder-count="3">
@@ -114,7 +118,7 @@
 
 <nav aria-label="Views" style="position:sticky;top:0;z-index:200;background:var(--paper);border-bottom:1px solid var(--rule);padding:0 24px;display:flex;gap:4px;align-items:stretch;">
   <sc-for list="{{ nav }}" as="nv" hint-placeholder-count="3">
-    <button type="button" sc-camel-on-click="{{ nv.onClick }}" style="background:none;border:0;border-bottom:2px solid {{ nv.underline }};margin-bottom:-1px;color:{{ nv.color }};font-weight:{{ nv.weight }};font-size:13px;padding:12px;cursor:pointer;white-space:nowrap;">{{ nv.label }}</button>
+    <button type="button" sc-camel-on-click="{{ nv.onClick }}" style="background:none;border:0;border-bottom:2px solid {{ nv.underline }};margin-bottom:-1px;color:{{ nv.color }};font-weight:{{ nv.weight }};font-size:13.5px;padding:12px;cursor:pointer;white-space:nowrap;">{{ nv.label }}</button>
   </sc-for>
 </nav>
 
@@ -123,9 +127,9 @@
     <div style="padding:0 16px 14px;">
       <label style="display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Search tribe</label>
       <div style="position:relative;">
-        <input type="search" placeholder="Cards Products" autocomplete="off" value="{{ search }}" sc-camel-on-change="{{ setSearch }}" sc-camel-on-key-down="{{ searchKeyDown }}" style="width:100%;padding:7px 26px 7px 10px;border:1px solid var(--rule-strong);border-radius:6px;font-family:inherit;font-size:13px;background:var(--card);color:var(--ink);outline:none;">
+        <input type="search" placeholder="Cards Products" autocomplete="off" value="{{ search }}" sc-camel-on-change="{{ setSearch }}" sc-camel-on-key-down="{{ searchKeyDown }}" style="width:100%;padding:8px 26px 8px 10px;border:1px solid var(--rule-strong);border-radius:6px;font-family:inherit;font-size:13.5px;background:var(--card);color:var(--ink);outline:none;">
         <sc-if value="{{ hasSearch }}" hint-placeholder-val="{{ false }}">
-          <button type="button" sc-camel-on-click="{{ clearSearch }}" title="Clear search" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper-2);border:0;border-radius:50%;color:var(--muted);font-size:13px;line-height:1;cursor:pointer;padding:0;">×</button>
+          <button type="button" sc-camel-on-click="{{ clearSearch }}" title="Clear search" style="position:absolute;right:4px;top:50%;transform:translateY(-50%);width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;background:var(--paper-2);border:0;border-radius:50%;color:var(--muted);font-size:13.5px;line-height:1;cursor:pointer;padding:0;">×</button>
         </sc-if>
       </div>
     </div>
@@ -134,7 +138,7 @@
       <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Archetype</div>
       <div style="display:flex;flex-wrap:wrap;gap:4px;">
         <sc-for list="{{ archetypesView }}" as="arche" hint-placeholder-count="6">
-          <button type="button" sc-camel-on-click="{{ arche.onClick }}" style="border:1px solid var(--rule-strong);background:{{ arche.bg }};color:{{ arche.fg }};border-radius:6px;padding:4px 8px;font-size:12px;display:flex;gap:5px;align-items:center;cursor:pointer;">
+          <button type="button" sc-camel-on-click="{{ arche.onClick }}" style="border:1px solid var(--rule-strong);background:{{ arche.bg }};color:{{ arche.fg }};border-radius:6px;padding:4px 8px;font-size:12.5px;display:flex;gap:6px;align-items:center;cursor:pointer;">
             <span style="display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:4px;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--card);background:{{ arche.color }};">{{ arche.code }}</span>{{ arche.count }}
           </button>
         </sc-for>
@@ -144,7 +148,7 @@
       <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Level</div>
       <div style="display:flex;flex-wrap:wrap;gap:4px;">
         <sc-for list="{{ levelsView }}" as="lvl" hint-placeholder-count="3">
-          <button type="button" sc-camel-on-click="{{ lvl.onClick }}" style="border:1px solid var(--rule-strong);background:{{ lvl.bg }};color:{{ lvl.fg }};border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;">{{ lvl.label }}</button>
+          <button type="button" sc-camel-on-click="{{ lvl.onClick }}" style="border:1px solid var(--rule-strong);background:{{ lvl.bg }};color:{{ lvl.fg }};border-radius:6px;padding:4px 8px;font-size:12.5px;cursor:pointer;">{{ lvl.label }}</button>
         </sc-for>
       </div>
     </div>
@@ -152,7 +156,7 @@
       <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;">Track</div>
       <div style="display:flex;flex-wrap:wrap;gap:4px;">
         <sc-for list="{{ tracksView }}" as="tr" hint-placeholder-count="2">
-          <button type="button" sc-camel-on-click="{{ tr.onClick }}" style="border:1px solid var(--rule-strong);background:{{ tr.bg }};color:{{ tr.fg }};border-radius:6px;padding:4px 8px;font-size:12px;cursor:pointer;">{{ tr.label }}</button>
+          <button type="button" sc-camel-on-click="{{ tr.onClick }}" style="border:1px solid var(--rule-strong);background:{{ tr.bg }};color:{{ tr.fg }};border-radius:6px;padding:4px 8px;font-size:12.5px;cursor:pointer;">{{ tr.label }}</button>
         </sc-for>
       </div>
     </div>
@@ -160,14 +164,14 @@
     <div style="padding:0 16px 6px;"><span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribes</span></div>
     <div style="padding:0 8px;">
       <sc-for list="{{ tribesShown }}" as="tribe" hint-placeholder-count="15">
-        <button type="button" sc-camel-on-click="{{ tribe.onClick }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:{{ tribe.bg }};border:0;border-radius:6px;box-shadow:{{ tribe.shadow }};padding:7px 10px;margin-bottom:1px;color:var(--ink);cursor:pointer;">
+        <button type="button" sc-camel-on-click="{{ tribe.onClick }}" style="display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:{{ tribe.bg }};border:0;border-radius:6px;box-shadow:{{ tribe.shadow }};padding:8px 10px;margin-bottom:1px;color:var(--ink);cursor:pointer;">
           <span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ tribe.dotColor }};flex:none;"></span>
           <span style="font-size:12.5px;line-height:1.35;flex:1;">{{ tribe.label }}</span>
-          <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">{{ tribe.count }}</span>
+          <span style="font-family:var(--font-mono);font-size:11.5px;color:var(--muted);">{{ tribe.count }}</span>
         </button>
       </sc-for>
       <sc-if value="{{ noTribesMatch }}" hint-placeholder-val="{{ false }}">
-        <div style="padding:10px;font-size:12px;color:var(--muted);">No tribes match</div>
+        <div style="padding:12px 10px;font-size:12.5px;color:var(--muted);">No tribes match</div>
       </sc-if>
     </div>
   </aside>
@@ -176,9 +180,9 @@
     <sc-if value="{{ hasFilters }}" hint-placeholder-val="{{ false }}">
       <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:16px;">
         <sc-for list="{{ filterChips }}" as="fc" hint-placeholder-count="2">
-          <button type="button" sc-camel-on-click="{{ fc.onClear }}" title="Remove filter" style="display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--ink-2);cursor:pointer;white-space:nowrap;">{{ fc.label }}<span aria-hidden="true" style="font-size:13px;line-height:1;color:var(--muted);">×</span></button>
+          <button type="button" sc-camel-on-click="{{ fc.onClear }}" title="Remove filter" style="display:inline-flex;align-items:center;gap:6px;background:var(--paper-2);border:1px solid var(--rule);border-radius:999px;padding:4px 10px;font-size:12.5px;color:var(--ink-2);cursor:pointer;white-space:nowrap;">{{ fc.label }}<span aria-hidden="true" style="font-size:13.5px;line-height:1;color:var(--muted);">×</span></button>
         </sc-for>
-        <button type="button" sc-camel-on-click="{{ clearAll }}" style="background:none;border:0;color:var(--tech);font-size:12px;cursor:pointer;padding:4px 6px;text-decoration:underline;white-space:nowrap;">Clear all</button>
+        <button type="button" sc-camel-on-click="{{ clearAll }}" style="background:none;border:0;color:var(--tech);font-size:12.5px;cursor:pointer;padding:4px 6px;text-decoration:underline;white-space:nowrap;">Clear all</button>
       </div>
     </sc-if>
     <sc-if value="{{ viewOverview }}" hint-placeholder-val="{{ true }}">
@@ -187,15 +191,15 @@
         <div style="grid-area:{{ tile.area }};background:{{ tile.bg }};border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;min-width:0;display:flex;flex-direction:column;">
           <div style="font-size:11.5px;font-weight:500;color:var(--muted);">{{ tile.k }}</div>
           <sc-if value="{{ tile.isDonut }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;align-items:center;gap:22px;margin-top:8px;flex:1;flex-wrap:wrap;">
-              <div style="display:flex;align-items:center;gap:18px;flex:none;">
+            <div style="display:flex;align-items:center;gap:20px;margin-top:8px;flex:1;flex-wrap:wrap;">
+              <div style="display:flex;align-items:center;gap:16px;flex:none;">
                 <svg width="80" height="80" sc-camel-view-box="0 0 80 80" aria-hidden="true" style="flex:none;">
                   <circle cx="40" cy="40" r="30" fill="none" stroke="var(--track)" stroke-width="9"></circle>
                   <circle cx="40" cy="40" r="30" fill="none" stroke="var(--pos)" stroke-width="9" stroke-linecap="round" stroke-dasharray="{{ tile.donutDash }}" transform="rotate(-90 40 40)"></circle>
                 </svg>
                 <div style="min-width:0;">
                   <div style="display:flex;align-items:baseline;gap:8px;"><span style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.1;font-variant-numeric:tabular-nums;">{{ tile.v }}</span><span style="font-family:var(--font-mono);font-size:12.5px;color:var(--pos-ink);">{{ tile.pctLabel }}</span></div>
-                  <div style="font-size:12px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
+                  <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
                 </div>
               </div>
               <div style="flex:1;min-width:150px;">
@@ -204,7 +208,7 @@
                     <span style="display:block;height:100%;width:{{ sd.pct }}%;background:{{ sd.color }};" title="{{ sd.count }}"></span>
                   </sc-for>
                 </div>
-                <div style="display:flex;flex-direction:column;gap:5px;margin-top:10px;">
+                <div style="display:flex;flex-direction:column;gap:6px;margin-top:12px;">
                   <sc-for list="{{ tile.statusDist }}" as="sd2" hint-placeholder-count="3">
                     <span style="display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-2);white-space:nowrap;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ sd2.color }};flex:none;"></span><span style="flex:1;min-width:0;">{{ sd2.label }}</span><span style="font-family:var(--font-mono);font-variant-numeric:tabular-nums;color:var(--ink);">{{ sd2.count }}</span></span>
                   </sc-for>
@@ -213,13 +217,13 @@
             </div>
           </sc-if>
           <sc-if value="{{ tile.isDist }}" hint-placeholder-val="{{ false }}">
-            <div style="display:flex;align-items:baseline;gap:10px;margin-top:8px;">
+            <div style="display:flex;align-items:baseline;gap:8px;margin-top:8px;">
               <div style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;font-variant-numeric:tabular-nums;">{{ tile.v }}</div>
-              <div style="font-size:12px;color:var(--muted);">{{ tile.s }}</div>
+              <div style="font-size:12.5px;color:var(--muted);">{{ tile.s }}</div>
             </div>
             <div style="height:56px;display:flex;align-items:flex-end;gap:8px;margin-top:12px;">
               <sc-for list="{{ tile.dist }}" as="d" hint-placeholder-count="6">
-                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:3px;min-width:0;">
+                <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;gap:4px;min-width:0;">
                   <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);font-variant-numeric:tabular-nums;">{{ d.count }}</span>
                   <span style="display:block;width:100%;height:{{ d.pct }}%;background:{{ d.color }};border-radius:4px;min-height:8px;" title="{{ d.count }}"></span>
                 </div>
@@ -233,7 +237,7 @@
           </sc-if>
           <sc-if value="{{ tile.plain }}" hint-placeholder-val="{{ true }}">
             <div style="font-family:var(--font-display);font-size:30px;font-weight:600;letter-spacing:-0.02em;line-height:1.15;margin-top:8px;font-variant-numeric:tabular-nums;">{{ tile.v }}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:4px;">{{ tile.s }}</div>
           </sc-if>
         </div>
       </sc-for>
@@ -241,13 +245,13 @@
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
-          <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">Career ladder</h2>
+          <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">Career ladder</h2>
           <span style="font-size:11.5px;color:var(--muted);">purple — Business PO, blue — Technical PO</span>
         </header>
         <div style="padding:0 16px;">
           <sc-for list="{{ ladderRows }}" as="lr" hint-placeholder-count="3">
-            <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--rule);">
-              <div><span style="font-size:13px;font-weight:500;">{{ lr.label }}</span><small style="display:block;color:var(--muted);font-size:11px;">{{ lr.sub }}</small></div>
+            <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--rule);">
+              <div><span style="font-size:13.5px;font-weight:500;">{{ lr.label }}</span><small style="display:block;color:var(--muted);font-size:11.5px;">{{ lr.sub }}</small></div>
               <div style="display:flex;height:18px;border-radius:9px;overflow:hidden;background:var(--track);">
                 <span style="display:block;height:100%;background:var(--biz);width:{{ lr.bizPct }}%;" title="{{ lr.bizCount }}"></span>
                 <span style="display:block;height:100%;background:var(--tech);width:{{ lr.techPct }}%;" title="{{ lr.techCount }}"></span>
@@ -255,23 +259,23 @@
               <span style="font-family:var(--font-mono);font-size:12.5px;text-align:right;">{{ lr.count }} · B{{ lr.bizCount }} / T{{ lr.techCount }}</span>
             </div>
           </sc-for>
-          <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:10px 0;border-top:2px solid var(--rule-strong);">
-            <div><span style="font-size:13px;font-weight:500;">Delivery Lead</span><small style="display:block;color:var(--muted);font-size:11px;">parallel role, tribe level</small></div>
+          <div style="display:grid;grid-template-columns:150px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:12px 0;border-top:2px solid var(--rule-strong);">
+            <div><span style="font-size:13.5px;font-weight:500;">Delivery Lead</span><small style="display:block;color:var(--muted);font-size:11.5px;">parallel role, tribe level</small></div>
             <div style="height:18px;border-radius:9px;overflow:hidden;background:var(--track);"><span style="display:block;height:100%;background:var(--ink-2);width:100%;" title="{{ dlCount }}"></span></div>
             <span style="font-family:var(--font-mono);font-size:12.5px;text-align:right;">{{ dlCount }} · across tribes</span>
           </div>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--ink-2);padding:8px 16px;border-top:1px solid var(--rule);background:var(--paper-3);">
-          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Pipeline</b> ready for promotion — {{ readyLabel }}</span>
-          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Blocked</b> at least one gate closed — {{ blockedLabel }}</span>
-          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Delivery Lead</b> moving into it is not a step up the IC ladder</span>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--ink-2);padding:8px 16px;border-top:1px solid var(--rule);background:var(--paper-3);">
+          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11.5px;">Pipeline</b> ready for promotion — {{ readyLabel }}</span>
+          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11.5px;">Blocked</b> at least one gate closed — {{ blockedLabel }}</span>
+          <span><b style="font-weight:600;font-family:var(--font-body);font-size:11.5px;">Delivery Lead</b> moving into it is not a step up the IC ladder</span>
         </div>
       </div>
     </sc-if>
     <sc-if value="{{ viewSquads }}" hint-placeholder-val="{{ false }}">
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
-          <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">{{ tribeTitle }} — squads and Product Owners</h2>
+          <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">{{ tribeTitle }} — squads and Product Owners</h2>
           <span style="font-size:11.5px;color:var(--muted);">{{ rows.length }} squads</span>
         </header>
         <div style="overflow-x:auto;">
@@ -281,12 +285,12 @@
             </div>
             <sc-for list="{{ rows }}" as="row" hint-placeholder-count="10">
               <div sc-camel-on-click="{{ row.onClick }}" style="display:grid;grid-template-columns:28px minmax(240px,1fr) 160px 130px 132px 150px;gap:8px;padding:12px;border-bottom:1px solid var(--rule-soft);align-items:center;cursor:pointer;" style-hover="background:var(--hover);">
-                <span style="display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:4px;font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--card);background:{{ row.archColor }};">{{ row.archCode }}</span>
-                <span><div style="font-size:13px;">{{ row.name }}</div><div style="font-size:11px;color:var(--muted);">{{ row.tribe }}</div></span>
-                <span><div style="font-family:var(--font-mono);font-size:13px;">{{ row.po }}</div><div style="font-size:10.5px;color:var(--muted);font-variant:small-caps;letter-spacing:0.04em;">{{ row.trackShort }}</div></span>
-                <span><span style="font-family:var(--font-mono);font-size:11px;border:1px solid {{ row.levelBorder }};border-radius:4px;padding:1px 6px;color:{{ row.levelColor }};white-space:nowrap;">{{ row.levelText }}</span></span>
+                <span style="display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;border-radius:4px;font-family:var(--font-mono);font-size:11.5px;font-weight:500;color:var(--card);background:{{ row.archColor }};">{{ row.archCode }}</span>
+                <span><div style="font-size:13.5px;">{{ row.name }}</div><div style="font-size:11.5px;color:var(--muted);">{{ row.tribe }}</div></span>
+                <span><div style="font-family:var(--font-mono);font-size:13.5px;">{{ row.po }}</div><div style="font-size:10px;color:var(--muted);font-variant:small-caps;letter-spacing:0.04em;">{{ row.trackShort }}</div></span>
+                <span><span style="font-family:var(--font-mono);font-size:11.5px;border:1px solid {{ row.levelBorder }};border-radius:4px;padding:1px 6px;color:{{ row.levelColor }};white-space:nowrap;">{{ row.levelText }}</span></span>
                 <span style="display:flex;align-items:center;gap:8px;justify-content:flex-end;min-width:0;">
-                  <span style="width:48px;height:5px;border-radius:3px;background:var(--track);overflow:hidden;display:inline-block;flex:none;" aria-hidden="true"><span style="display:block;height:100%;border-radius:3px;background:{{ row.statusColor }};width:{{ row.compositePct }}%;"></span></span>
+                  <span style="width:48px;height:5px;border-radius:6px;background:var(--track);overflow:hidden;display:inline-block;flex:none;" aria-hidden="true"><span style="display:block;height:100%;border-radius:6px;background:{{ row.statusColor }};width:{{ row.compositePct }}%;"></span></span>
                   <span style="font-family:var(--font-mono);font-size:12.5px;font-weight:500;">{{ row.compositeText }}</span>
                 </span>
                 <span style="display:flex;"><span style="display:inline-flex;align-items:center;gap:6px;background:{{ row.statusBg }};color:{{ row.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ row.statusColor }};flex:none;"></span>{{ row.statusLabel }}</span></span>
@@ -294,8 +298,8 @@
             </sc-for>
           </div>
         </div>
-        <div style="display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--ink-2);padding:8px 16px;border-top:1px solid var(--rule);background:var(--paper-3);">
-          <sc-if value="{{ hasStarNote }}" hint-placeholder-val="{{ false }}"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">*</b> outcome not attributed: tenure under 2 quarters</span></sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:12px;font-size:11.5px;color:var(--ink-2);padding:8px 16px;border-top:1px solid var(--rule);background:var(--paper-3);">
+          <sc-if value="{{ hasStarNote }}" hint-placeholder-val="{{ false }}"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11.5px;">*</b> outcome not attributed: tenure under 2 quarters</span></sc-if>
         </div>
       </div>
       <div style="border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;padding:12px;font-size:12.5px;color:var(--ink-2);">Delivery and flow metrics are intentionally absent from this table: they live on the Delivery Lead card, where they are a direct responsibility, and in the squad's diagnostic panel.</div>
@@ -303,12 +307,12 @@
     <sc-if value="{{ viewDL }}" hint-placeholder-val="{{ false }}">
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px;">
       <sc-for list="{{ dlCards }}" as="dl" hint-placeholder-count="8">
-        <div sc-camel-on-click="{{ dl.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:14px;cursor:pointer;min-width:0;" style-hover="border-color:var(--rule-strong);">
+        <div sc-camel-on-click="{{ dl.onClick }}" style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);padding:20px;display:flex;flex-direction:column;gap:12px;cursor:pointer;min-width:0;" style-hover="border-color:var(--rule-strong);">
           <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;">
             <div style="min-width:0;">
               <div style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribe Delivery Lead</div>
-              <div style="font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-0.01em;margin-top:3px;">{{ dl.tribe }}</div>
-              <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ dl.code }} · {{ dl.squadCount }} squads · {{ dl.fte }} FTE</div>
+              <div style="font-family:var(--font-display);font-size:15px;font-weight:600;letter-spacing:-0.01em;margin-top:4px;">{{ dl.tribe }}</div>
+              <div style="font-size:12.5px;color:var(--muted);margin-top:2px;">{{ dl.code }} · {{ dl.squadCount }} squads · {{ dl.fte }} FTE</div>
             </div>
             <span style="display:inline-flex;align-items:center;gap:6px;background:{{ dl.statusBg }};color:{{ dl.statusInk }};border-radius:999px;padding:3px 10px;font-size:11.5px;font-weight:500;white-space:nowrap;flex:none;"><span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:{{ dl.statusColor }};flex:none;"></span>{{ dl.statusLabel }}</span>
           </div>
@@ -322,15 +326,15 @@
     </div>
     </sc-if>
     <sc-if value="{{ selectedSquad }}" hint-placeholder-val="{{ false }}">
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12px;">{{ tribeTitle }}</button> / {{ selectedSquad.name }}</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12.5px;">{{ tribeTitle }}</button> / {{ selectedSquad.name }}</div>
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div>
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">{{ selectedSquad.name }}</h2>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ selectedSquad.tribe }} · archetype {{ selectedSquad.archCode }} — {{ selectedSquad.archLabel }} · {{ selectedSquad.po }} · {{ selectedSquad.track }} · {{ selectedSquad.lvlShort }}</div>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">{{ selectedSquad.name }}</h2>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:2px;">{{ selectedSquad.tribe }} · archetype {{ selectedSquad.archCode }} — {{ selectedSquad.archLabel }} · {{ selectedSquad.po }} · {{ selectedSquad.track }} · {{ selectedSquad.lvlShort }}</div>
           </div>
-          <span style="font-size:13px;color:var(--ink-2);display:flex;gap:6px;align-items:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ selectedSquad.statusColor }};flex:none;"></span>{{ selectedSquad.statusLabel }} · composite {{ selectedSquad.composite }}</span>
+          <span style="font-size:13.5px;color:var(--ink-2);display:flex;gap:6px;align-items:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ selectedSquad.statusColor }};flex:none;"></span>{{ selectedSquad.statusLabel }} · composite {{ selectedSquad.composite }}</span>
         </header>
         <div style="padding:16px;">
           <sc-if value="{{ selectedSquad.isX }}" hint-placeholder-val="{{ false }}">
@@ -345,8 +349,8 @@
             </div>
             <sc-for list="{{ selectedSquad.metrics }}" as="m" hint-placeholder-count="3">
               <div style="display:grid;grid-template-columns:minmax(0,1.5fr) 92px minmax(120px,1fr) 52px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--rule);">
-                <div style="font-size:13px;">{{ m.label }}<small style="display:block;color:var(--muted);font-size:11px;">{{ m.unit }}</small></div>
-                <div style="font-family:var(--font-mono);font-size:14px;text-align:right;">{{ m.valueText }}<i style="font-style:normal;color:var(--muted);font-size:11px;display:block;">target {{ m.targetText }}</i></div>
+                <div style="font-size:13.5px;">{{ m.label }}<small style="display:block;color:var(--muted);font-size:11.5px;">{{ m.unit }}</small></div>
+                <div style="font-family:var(--font-mono);font-size:13.5px;text-align:right;">{{ m.valueText }}<i style="font-style:normal;color:var(--muted);font-size:11.5px;display:block;">target {{ m.targetText }}</i></div>
                 <div style="position:relative;height:22px;background:var(--track);border-radius:4px;overflow:hidden;" title="archetype spread: {{ m.min }} – {{ m.max }}">
                   <div style="position:absolute;top:0;bottom:0;left:0;background:var(--rule-strong);width:{{ m.fillPct }}%;"></div>
                   <div style="position:absolute;top:0;bottom:0;width:1px;background:var(--muted);left:{{ m.medPct }}%;"></div>
@@ -359,14 +363,14 @@
         </div>
       </div>
 
-      <div data-stp-split="true" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;">
+      <div data-stp-split="true" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;">
         <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden;">
           <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">Assessment and promotion</h2>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">Assessment and promotion</h2>
             <span style="font-size:11.5px;color:var(--muted);">closed loop</span>
           </header>
           <div style="padding:16px;">
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;margin-bottom:12px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;margin-bottom:12px;">
               <span style="color:var(--ink-2);">Current level</span><span style="font-family:var(--font-mono);">{{ selectedSquad.lvlText }}</span>
               <span style="color:var(--ink-2);">Track</span><span style="font-family:var(--font-mono);">{{ selectedSquad.track }}</span>
               <span style="color:var(--ink-2);">Tenure in role</span><span style="font-family:var(--font-mono);">{{ selectedSquad.tenure }}</span>
@@ -374,8 +378,8 @@
               <span style="color:var(--ink-2);">360 feedback</span><span style="font-family:var(--font-mono);">{{ selectedSquad.f360 }}</span>
               <span style="color:var(--ink-2);">IDP progress</span><span style="font-family:var(--font-mono);">{{ selectedSquad.idp }}</span>
             </div>
-            <div style="border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;">
-              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 52px 92px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">
+            <div style="border:1px solid var(--rule-strong);border-radius:6px;overflow:hidden;">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px 52px 92px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">
                 <span>Component</span><span style="text-align:right;">Score</span><span style="text-align:right;">Weight</span><span style="text-align:right;">Contribution</span>
               </div>
               <sc-for list="{{ selectedSquad.calcRows }}" as="cr" hint-placeholder-count="4">
@@ -395,8 +399,8 @@
               <div style="border:1px solid var(--pos);background:var(--pos-bg);border-radius:8px;padding:12px;font-size:12.5px;margin-top:12px;color:var(--pos-ink);">Expert Product Owner — top of the IC ladder. Further growth: scope expansion, a Bar Raiser role on panels, or a move into Delivery Lead — a change of role type, not a grade promotion.</div>
             </sc-if>
             <sc-if value="{{ selectedSquad.gatesNotTop }}" hint-placeholder-val="{{ true }}">
-              <div style="border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;margin-top:12px;">
-                <div style="display:grid;grid-template-columns:44px minmax(0,1fr) 90px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">
+              <div style="border:1px solid var(--rule-strong);border-radius:6px;overflow:hidden;margin-top:12px;">
+                <div style="display:grid;grid-template-columns:44px minmax(0,1fr) 90px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">
                   <span>Gate</span><span>Condition to move into {{ selectedSquad.nextLevelName }}</span><span style="text-align:right;">Status</span>
                 </div>
                 <sc-for list="{{ selectedSquad.gates }}" as="g" hint-placeholder-count="4">
@@ -407,7 +411,7 @@
                   </div>
                 </sc-for>
               </div>
-              <div style="font-size:11.5px;color:var(--muted);margin-top:8px;"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11px;">Gates</b> green passed · amber in progress · red blocked</span></div>
+              <div style="font-size:11.5px;color:var(--muted);margin-top:8px;"><span><b style="font-weight:600;font-family:var(--font-body);font-size:11.5px;">Gates</b> green passed · amber in progress · red blocked</span></div>
               <sc-if value="{{ selectedSquad.isReady }}" hint-placeholder-val="{{ false }}">
                 <div style="border:1px solid var(--pos);background:var(--pos-bg);border-radius:8px;padding:12px;font-size:12.5px;margin-top:12px;color:var(--pos-ink);">All gates passed — a candidate for promotion to {{ selectedSquad.nextLevelName }} this cycle.</div>
               </sc-if>
@@ -421,8 +425,8 @@
                     <div style="display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;">
                       <span>{{ c.name }}</span><span style="font-family:var(--font-mono);text-align:right;color:{{ c.color }};">{{ c.score }}</span>
                     </div>
-                    <div style="height:6px;background:var(--track);border-radius:3px;position:relative;margin:5px 0;">
-                      <span style="position:absolute;left:0;top:0;bottom:0;background:var(--ink-2);border-radius:3px;width:{{ c.score }}%;"></span>
+                    <div style="height:6px;background:var(--track);border-radius:6px;position:relative;margin:5px 0;">
+                      <span style="position:absolute;left:0;top:0;bottom:0;background:var(--ink-2);border-radius:6px;width:{{ c.score }}%;"></span>
                       <b style="position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--neg);left:{{ c.need }}%;"></b>
                     </div>
                   </div>
@@ -434,17 +438,17 @@
 
         <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden;">
           <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">Delivery &amp; team health</h2>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">Delivery &amp; team health</h2>
             <span style="font-size:11.5px;color:var(--muted);">diagnostics, outside PO KPI</span>
           </header>
           <div style="padding:16px;">
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;">
               <sc-for list="{{ selectedSquad.deliveryKV }}" as="kv" hint-placeholder-count="7">
                 <span style="color:var(--ink-2);grid-column:1/-1;">{{ kv.k }}</span>
               </sc-for>
             </div>
             <div style="height:1px;background:var(--rule);margin:12px 0;"></div>
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;">
               <sc-for list="{{ selectedSquad.wellbeingKV }}" as="kv2" hint-placeholder-count="4">
                 <span style="color:var(--ink-2);grid-column:1/-1;">{{ kv2.k }}</span>
               </sc-for>
@@ -457,19 +461,19 @@
       </div>
     </sc-if>
     <sc-if value="{{ selectedRole }}" hint-placeholder-val="{{ false }}">
-      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12px;">{{ selectedRole.tribe }}</button> / Delivery Lead</div>
+      <div style="font-size:12.5px;color:var(--muted);margin-bottom:12px;"><button type="button" sc-camel-on-click="{{ backToList }}" style="background:none;border:0;color:var(--ink-2);text-decoration:underline;padding:0;font-size:12.5px;">{{ selectedRole.tribe }}</button> / Delivery Lead</div>
 
       <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);margin-bottom:16px;overflow:hidden;">
         <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;">
           <div>
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">{{ selectedRole.code }} — Delivery Lead</h2>
-            <div style="font-size:12px;color:var(--muted);margin-top:2px;">{{ selectedRole.tribe }} · {{ selectedRole.squadCount }} squads · {{ selectedRole.fte }} FTE · in role {{ selectedRole.tenure }}</div>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">{{ selectedRole.code }} — Delivery Lead</h2>
+            <div style="font-size:12.5px;color:var(--muted);margin-top:2px;">{{ selectedRole.tribe }} · {{ selectedRole.squadCount }} squads · {{ selectedRole.fte }} FTE · in role {{ selectedRole.tenure }}</div>
           </div>
-          <span style="font-size:13px;color:var(--ink-2);display:flex;gap:6px;align-items:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ selectedRole.statusColor }};flex:none;"></span>{{ selectedRole.statusLabel }} · composite {{ selectedRole.compositeDL }}</span>
+          <span style="font-size:13.5px;color:var(--ink-2);display:flex;gap:6px;align-items:center;"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:{{ selectedRole.statusColor }};flex:none;"></span>{{ selectedRole.statusLabel }} · composite {{ selectedRole.compositeDL }}</span>
         </header>
         <div style="padding:16px;">
-          <div style="border:1px solid var(--rule-strong);border-radius:3px;overflow:hidden;">
-            <div style="display:grid;grid-template-columns:minmax(0,1fr) 80px 56px 92px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);">
+          <div style="border:1px solid var(--rule-strong);border-radius:6px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 80px 56px 92px;gap:8px;padding:8px 12px;background:var(--paper-2);font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">
               <span>Component</span><span style="text-align:right;">Score</span><span style="text-align:right;">Weight</span><span style="text-align:right;">Contribution</span>
             </div>
             <sc-for list="{{ selectedRole.calcRows }}" as="cr" hint-placeholder-count="3">
@@ -485,19 +489,19 @@
         </div>
       </div>
 
-      <div data-stp-split="true" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:18px;">
+      <div data-stp-split="true" style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;">
         <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden;">
           <header style="padding:12px 16px;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;justify-content:space-between;gap:12px;">
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">Delivery health</h2>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">Delivery health</h2>
             <span style="font-size:11.5px;color:var(--muted);">aggregate across {{ selectedRole.squadCount }} squads</span>
           </header>
           <div style="padding:16px;">
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;">
               <sc-for list="{{ selectedRole.deliveryKV }}" as="kv" hint-placeholder-count="7">
                 <span style="color:var(--ink-2);grid-column:1/-1;">{{ kv.k }}</span>
               </sc-for>
             </div>
-            <div style="border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;padding:12px;font-size:12.5px;margin-top:14px;color:var(--ink-2);">CFR is weighted by deploy count, not averaged across squad percentages. Lead time is the median across all flow items.</div>
+            <div style="border:1px solid var(--rule);background:var(--paper-2);border-radius:8px;padding:12px;font-size:12.5px;margin-top:16px;color:var(--ink-2);">CFR is weighted by deploy count, not averaged across squad percentages. Lead time is the median across all flow items.</div>
             <div style="margin-top:16px;">
               <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">8 Delivery Lead competencies, threshold {{ selectedRole.dlNeed }}</span>
               <div style="margin-top:8px;">
@@ -506,8 +510,8 @@
                     <div style="display:grid;grid-template-columns:minmax(0,1fr) 34px;gap:8px;align-items:center;">
                       <span>{{ c.name }}</span><span style="font-family:var(--font-mono);text-align:right;color:{{ c.color }};">{{ c.score }}</span>
                     </div>
-                    <div style="height:6px;background:var(--track);border-radius:3px;position:relative;margin:5px 0;">
-                      <span style="position:absolute;left:0;top:0;bottom:0;background:var(--ink-2);border-radius:3px;width:{{ c.score }}%;"></span>
+                    <div style="height:6px;background:var(--track);border-radius:6px;position:relative;margin:5px 0;">
+                      <span style="position:absolute;left:0;top:0;bottom:0;background:var(--ink-2);border-radius:6px;width:{{ c.score }}%;"></span>
                       <b style="position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--neg);left:{{ selectedRole.dlNeed }}%;"></b>
                     </div>
                   </div>
@@ -519,18 +523,18 @@
 
         <div style="background:var(--card);border:1px solid var(--rule);border-radius:var(--radius-card);box-shadow:var(--shadow-card);overflow:hidden;">
           <header style="padding:12px 16px;border-bottom:1px solid var(--rule);">
-            <h2 style="font-family:var(--font-display);font-weight:600;font-size:14.5px;letter-spacing:-0.01em;margin:0;">Team &amp; talent</h2>
+            <h2 style="font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:-0.01em;margin:0;">Team &amp; talent</h2>
             <span style="font-size:11.5px;color:var(--muted);">HR panel for the role</span>
           </header>
           <div style="padding:16px;">
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;">
               <sc-for list="{{ selectedRole.talentKV }}" as="kv" hint-placeholder-count="7">
                 <span style="color:var(--ink-2);grid-column:1/-1;">{{ kv.k }}</span>
               </sc-for>
             </div>
             <div style="height:1px;background:var(--rule);margin:14px 0;"></div>
             <span style="font-family:var(--font-mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);">Tribe composition by level</span>
-            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13px;margin-top:8px;">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:6px 12px;font-size:13.5px;margin-top:8px;">
               <sc-for list="{{ selectedRole.levelMixKV }}" as="kv2" hint-placeholder-count="4">
                 <span style="color:var(--ink-2);grid-column:1/-1;">{{ kv2.k }}</span>
               </sc-for>
